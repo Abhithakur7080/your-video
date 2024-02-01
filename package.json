@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "this is a media webpage handle videos players",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.js"
   },
   "author": "Abhijeet Kumar",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
   }
 }

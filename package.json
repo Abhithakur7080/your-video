@@ -1,0 +1,14 @@
+{
+  "name": "yourvid",
+  "version": "1.0.0",
+  "description": "this is a media webpage handle videos players",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abhijeet Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

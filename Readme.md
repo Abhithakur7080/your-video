@@ -9,9 +9,16 @@
 
 <hr>
 
-#### Database setup
+#### Database setup =>
 1. Create database on mongodb website and create cluster and create collections
 2. Make database file in src/db/index.js and imported mongoose liberary and handle all required.
 3. Sensitive info added in dotenv file and also setup my dotenv configuration
 4. Also added some dotenv information in dotenvsample file for more readibility and hide some confidental information
 5. Also updated some dotenv configuration on package.json when app is running on developement mode
+
+<hr>
+
+#### utility setup =>
+1. `async await handler:` created async await handler where i can use easily handle the promises and trycatch and here i both 2 options i commented but currently i uses promises functions which can be make easy to setup.
+2. `API Error:` this api basically handle our code where which data i send and it will give error then what i have to do status code, messages and anything about errors.
+3. `API Response:` this api basically handle our code where which data i send and it will successfully sent then what i have to do status code, messages and anything about data. 

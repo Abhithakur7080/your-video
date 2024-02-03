@@ -26,3 +26,7 @@
 #### model setup =>
 1. making a video model and using `mongoose-aggregate-paginate-v2` dependency to set use the pagination of our video model.
 2. making our user model including username, email, password,..... and using `bcrypt` dependency to set password in incrypted by secure and also decrypted used. Also use another dependency `jsonwebtoken` to set user login time for sometimes here i used 2 functions which 1 are when user logged in give access token and also get a refresh token for some times.
+
+#### media upload setup =>
+1. use `cloudinary` to upload the database of media url and if something error on uploading use `file system` `fs` to unlink the temperory uploaded the file on local.
+2. use `multer` middleware to upload help when uploading any then go to cloudinary and get a url upload url on the mongodb database.

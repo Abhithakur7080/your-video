@@ -18,15 +18,18 @@
 
 <hr>
 
-#### utility setup =>
+#### Utility setup =>
 1. `async await handler:` created async await handler where i can use easily handle the promises and trycatch and here i both 2 options i commented but currently i uses promises functions which can be make easy to setup.
 2. `API Error:` this api basically handle our code where which data i send and it will give error then what i have to do status code, messages and anything about errors.
 3. `API Response:` this api basically handle our code where which data i send and it will successfully sent then what i have to do status code, messages and anything about data.
 
-#### model setup =>
+#### Model setup =>
 1. making a video model and using `mongoose-aggregate-paginate-v2` dependency to set use the pagination of our video model.
 2. making our user model including username, email, password,..... and using `bcrypt` dependency to set password in incrypted by secure and also decrypted used. Also use another dependency `jsonwebtoken` to set user login time for sometimes here i used 2 functions which 1 are when user logged in give access token and also get a refresh token for some times.
 
-#### media upload setup =>
+#### Media upload setup =>
 1. use `cloudinary` to upload the database of media url and if something error on uploading use `file system` `fs` to unlink the temperory uploaded the file on local.
 2. use `multer` middleware to upload help when uploading any then go to cloudinary and get a url upload url on the mongodb database.
+
+#### controller =>
+1. `Register:` using all previous setting use register user completed successfully.

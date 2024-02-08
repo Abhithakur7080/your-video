@@ -32,7 +32,13 @@
 2. use `multer` middleware to upload help when uploading any then go to cloudinary and get a url upload url on the mongodb database.
 
 #### controller =>
+-------------------------- user controller ------------------------
 1. `Register:` using all previous setting use post method user completed successfully.
 2. `Login:` using all previous setting use post method to user logged in successfully and also i created a generated access and refresh token send to user.
 3. `Logout:` Also logout a user handled by server side so make verify cookie from body or header and check using `jsonwebtoken` and find user in database and send the user as an empty object. 
 4. `Refresh/Access-Token:` using refresh token and access token got initially when register and login but when logged out access token flushed and refresh token used to some limited time if expired then again generate a refresh token for same limited time and access token given when user logged in.
+5. `Change password:` user can change her password with old password, new password and confirm password.
+6. `Get current user:` get current user when user already logged in.
+7. `Update account details:` user can update account details by text like email, fullname...
+8. `Change Avatar:` user can get file and update avatar on database and cloudinary.
+9. `Change Cover Image:` user can get file and update her Cover Image on database and cloudinary.

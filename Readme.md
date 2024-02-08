@@ -32,4 +32,6 @@
 2. use `multer` middleware to upload help when uploading any then go to cloudinary and get a url upload url on the mongodb database.
 
 #### controller =>
-1. `Register:` using all previous setting use register user completed successfully.
+1. `Register:` using all previous setting use post method user completed successfully.
+2. `Login:` using all previous setting use post method to user logged in successfully and also i created a generated access and refresh token send to user.
+3. `Logout:` Also logout a user handled by server side so make verify cookie from body or header and check using `jsonwebtoken` and find user in database and send the user as an empty object. 

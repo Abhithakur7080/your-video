@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { User } from "../models/user.modals.js";
+import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 
@@ -146,9 +146,15 @@ const loginUser = asyncHandler(async (req, res) => {
 const logoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
+    //also correct but sometimes throw error due to null or undefined
+    // {
+    //   $set: {
+    //     refreshToken: undefined,
+    //   },
+    // },
     {
-      $set: {
-        refreshToken: undefined,
+      $unset: {
+        refreshToken: 1, //it removes the fields from the document
       },
     },
     {
@@ -169,7 +175,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 const refreshAccessToken = asyncHandler(async (req, res) => {
   try {
     //get token
-    const getToken = req.cookies?.refreshToken || req.body.refreshToken;
+    const getToken = req.cookies?.refreshToken || req.body?.refreshToken;
     if (!getToken) {
       throw new ApiError(401, "Unauthorized request");
     }
@@ -378,8 +384,8 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 const getWatchHistory = asyncHandler(async (req, res) => {
   const user = await User.aggregate([
     {
-      $match:{
-        _id: new mongoose.Types.ObjectId(req.user._id)
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id),
       },
       $lookup: {
         from: "Videos",
@@ -399,26 +405,29 @@ const getWatchHistory = asyncHandler(async (req, res) => {
                     fullName: 1,
                     username: 1,
                     avatar: 1,
-                  }
+                  },
                 },
                 {
                   $addFields: {
                     owner: {
-                      $first: "$owner"
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    }
-  ])
+                      $first: "$owner",
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ]);
   return res
-  .status(200)
-  .json(new ApiResponse(200, user[0].watchHistory), "Watch History fetched successfully");
-})
+    .status(200)
+    .json(
+      new ApiResponse(200, user[0].watchHistory),
+      "Watch History fetched successfully"
+    );
+});
 
 export {
   registerUser,
@@ -431,5 +440,5 @@ export {
   updateUserAvatar,
   updateUserCoverImage,
   getUserChannelProfile,
-  getWatchHistory
+  getWatchHistory,
 };

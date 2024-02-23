@@ -42,3 +42,5 @@
 7. `Update account details:` user can update account details by text like email, fullname...
 8. `Change Avatar:` user can get file and update avatar on database and cloudinary.
 9. `Change Cover Image:` user can get file and update her Cover Image on database and cloudinary.
+10. `Channel profile:` user can get channel profile.
+11. `watch history:` user can get her watch history.

@@ -35,27 +35,27 @@ router.route("/register").post(
 );
 router.route("/login").post(loginUser);
 
-//secured routes
-router.route("/logout").post(verifyJWT, logoutUser);
-
 router.route("/refresh-token").post(refreshAccessToken);
 
-router.route("/change-password").post(verifyJWT, changeCurrentPassword);
+//secured routes
+const securedRoute = router.use(verifyJWT);
 
-router.route("/current-user").get(verifyJWT, getCurrentUser);
+securedRoute.route("/logout").post(logoutUser);
 
-router.route("/update-account").patch(verifyJWT, updateAccountDetail);
+securedRoute.route("/change-password").post(changeCurrentPassword);
 
-router
-  .route("/avatar")
-  .patch(verifyJWT, upload.single("avatar"), updateUserAvatar);
+securedRoute.route("/current-user").get(getCurrentUser);
 
-router
+securedRoute.route("/update-account").patch(updateAccountDetail);
+
+securedRoute.route("/avatar").patch(upload.single("avatar"), updateUserAvatar);
+
+securedRoute
   .route("/cover-image")
-  .patch(verifyJWT, upload.single("coverImage"), updateUserCoverImage);
+  .patch(upload.single("coverImage"), updateUserCoverImage);
 
-router.route("/c/:username").get(verifyJWT, getUserChannelProfile);
+securedRoute.route("/c/:username").get(getUserChannelProfile);
 
-router.route('/watch-history').get(verifyJWT, getWatchHistory)
+securedRoute.route("/watch-history").get(getWatchHistory);
 
 export default router;

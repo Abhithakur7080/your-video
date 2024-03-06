@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -183,7 +184,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       getToken,
       process.env.REFRESH_TOKEN_SECRET
     );
-    const user = User.findById(decodedGetToken?._id);
+    const user = await User.findById(decodedGetToken?._id);
     if (!user) {
       throw new ApiError(401, "Invalid refresh token");
     }
@@ -243,7 +244,7 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
   if (!fullName || !email) {
     throw new ApiError(400, "All fields are required");
   }
-  const user = User.findByIdAndUpdate(
+  const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
       $set: {
@@ -255,6 +256,7 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
       new: true,
     }
   ).select("-password");
+
   return res
     .status(200)
     .json(new ApiResponse(200, user, "Account details updated successfully"));
@@ -387,17 +389,19 @@ const getWatchHistory = asyncHandler(async (req, res) => {
       $match: {
         _id: new mongoose.Types.ObjectId(req.user._id),
       },
+    },
+    {
       $lookup: {
-        from: "Videos",
-        localFields: "watchHistory",
-        foreignFields: "_id",
+        from: "videos",
+        localField: "watchHistory",
+        foreignField: "_id",
         as: "watchHistory",
         pipeline: [
           {
             $lookup: {
-              from: "Users",
-              localFields: "owner",
-              foreignFields: "_id",
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
               as: "owner",
               pipeline: [
                 {
@@ -407,25 +411,25 @@ const getWatchHistory = asyncHandler(async (req, res) => {
                     avatar: 1,
                   },
                 },
-                {
-                  $addFields: {
-                    owner: {
-                      $first: "$owner",
-                    },
-                  },
-                },
               ],
+            },
+          },
+          {
+            $addFields: {
+              owner: {
+                $first: "$owner",
+              },
             },
           },
         ],
       },
-    },
+    }
   ]);
   return res
     .status(200)
     .json(
-      new ApiResponse(200, user[0].watchHistory),
-      "Watch History fetched successfully"
+      new ApiResponse(200, user[0].watchHistory,
+      "Watch History fetched successfully")
     );
 });
 

@@ -24,6 +24,10 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
   const { playlistId, videoId } = req.params;
   //TODO: remove video from playlist
 });
+const deletePlaylist = asyncHandler(async (req, res) => {
+  const { playlistId } = req.params;
+  //TODO: delete playlist
+});
 const updatePlaylist = asyncHandler(async (req, res) => {
   const { playlistId } = req.params;
   const { name, description } = req.body;
@@ -35,5 +39,6 @@ export {
   getUserPlaylists,
   addVideoToPlaylist,
   removeVideoFromPlaylist,
+  deletePlaylist,
   updatePlaylist,
 };

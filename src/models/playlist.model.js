@@ -4,11 +4,11 @@ const playlistSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "name is required"],
     },
     description: {
       type: String,
-      required: true,
+      required: [true, "description is required"],
     },
     videos: [
       {

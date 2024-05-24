@@ -1,6 +1,5 @@
 import mongoose, { isValidObjectId } from "mongoose";
 import { Subscription } from "../models/subscriptions.model.js";
-import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -16,7 +15,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     channel: channelId,
   });
   if (isSubscribed) {
-    await Subscription.findOneAndDelete(isSubscribed?._id);
+    await Subscription.findByIdAndDelete(isSubscribed?._id);
     return res.status(200).json(
       new ApiResponse(
         200,
@@ -154,7 +153,7 @@ const getSubscribedChannel = asyncHandler(async (req, res) => {
       $project: {
         _id: 0,
         subscribedChannel: {
-          id: 1,
+          _id: 1,
           username: 1,
           fullName: 1,
           "avatar.url": 1,

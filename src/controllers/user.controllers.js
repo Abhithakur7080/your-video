@@ -75,10 +75,12 @@ const registerUser = asyncHandler(async (req, res) => {
       public_id: avatar.public_id,
       url: avatar.url,
     },
-    coverImage: coverImage ? {
-      public_id: coverImage.public_id,
-      url: coverImage.url,
-    } : null,
+    coverImage: coverImage
+      ? {
+          public_id: coverImage.public_id,
+          url: coverImage.url,
+        }
+      : null,
     email,
     password,
     username: username.toLowerCase(),
@@ -285,7 +287,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
         avatar: {
           public_id: avatar.public_id,
           url: avatar.url,
-        }
+        },
       },
     },
     {
@@ -315,7 +317,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
         coverImage: {
           public_id: coverImage.public_id,
           url: coverImage.url,
-        }
+        },
       },
     },
     {
@@ -436,13 +438,16 @@ const getWatchHistory = asyncHandler(async (req, res) => {
           },
         ],
       },
-    }
+    },
   ]);
   return res
     .status(200)
     .json(
-      new ApiResponse(200, user[0].watchHistory,
-      "Watch History fetched successfully")
+      new ApiResponse(
+        200,
+        user[0].watchHistory,
+        "Watch History fetched successfully"
+      )
     );
 });
 

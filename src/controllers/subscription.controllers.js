@@ -10,10 +10,12 @@ const toggleSubscription = asyncHandler(async (req, res) => {
   if (!isValidObjectId(channelId)) {
     throw new ApiError(400, "Invalid channelId");
   }
+  //get subscription status
   const isSubscribed = await Subscription.findOne({
     subscriber: req.user?._id,
     channel: channelId,
   });
+  //if yes subscribed then set it unsubscribed
   if (isSubscribed) {
     await Subscription.findByIdAndDelete(isSubscribed?._id);
     return res.status(200).json(
@@ -26,6 +28,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
       )
     );
   }
+  //not subscribed then subscribe the channel
   await Subscription.create({
     subscriber: req.user?._id,
     channel: channelId,

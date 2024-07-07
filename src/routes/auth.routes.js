@@ -7,7 +7,10 @@ import {
   registerUser,
   changeCurrentPassword,
   getCurrentUser,
-} from "../controllers/user.controllers.js";
+  updateAccountDetail,
+  updateUserAvatar,
+  updateUserCoverImage,
+} from "../controllers/auth.controllers.js";
 // middlewares
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
@@ -40,5 +43,13 @@ securedRoute.route("/logout").post(logoutUser);
 securedRoute.route("/change-password").post(changeCurrentPassword);
 
 securedRoute.route("/current-user").get(getCurrentUser);
+
+securedRoute.route("/update-account").patch(updateAccountDetail);
+
+securedRoute.route("/avatar").patch(upload.single("avatar"), updateUserAvatar);
+
+securedRoute
+  .route("/cover-image")
+  .patch(upload.single("coverImage"), updateUserCoverImage);
 
 export default router;

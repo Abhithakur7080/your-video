@@ -100,6 +100,7 @@ const getUserTweet = asyncHandler(async (req, res) => {
       },
     },
   ]);
+  //send data to frontend
   return res
     .status(200)
     .json(new ApiResponse(200, tweets, "Tweets fetched successfully"));
@@ -150,7 +151,7 @@ const updateTweet = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to edit tweet please try again");
   }
   //send data to frontend
-  res
+  return res
     .status(200)
     .json(new ApiResponse(200, newTweet, "Tweet updated successfully"));
 });

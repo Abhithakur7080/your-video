@@ -4,9 +4,10 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+// toggle subscription
 const toggleSubscription = asyncHandler(async (req, res) => {
   const { channelId } = req.params;
-  // toggle subscription
+  //validate channelId
   if (!isValidObjectId(channelId)) {
     throw new ApiError(400, "Invalid channelId");
   }
@@ -18,6 +19,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
   //if yes subscribed then set it unsubscribed
   if (isSubscribed) {
     await Subscription.findByIdAndDelete(isSubscribed?._id);
+    //send data to frontend
     return res.status(200).json(
       new ApiResponse(
         200,
@@ -33,6 +35,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     subscriber: req.user?._id,
     channel: channelId,
   });
+  //send data to frontend
   return res.status(200).json(
     new ApiResponse(
       200,
@@ -46,16 +49,15 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 //get channel subscribers list
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   const { channelId } = req.params;
-  // get subscribers list
+  // validate channelId
   if (!isValidObjectId(channelId)) {
     throw new ApiError(400, "Invalid channelId");
   }
-  channelId = new mongoose.Types.ObjectId(channelId);
-
+  //get all subscribers details using aggregation
   const subscribers = await Subscription.aggregate([
     {
       $match: {
-        channel: channelId,
+        channel: new mongoose.Types.ObjectId(channelId),
       },
     },
     {
@@ -109,6 +111,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
       },
     },
   ]);
+  //send data to frontend
   return res
     .status(200)
     .json(
@@ -118,6 +121,11 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
 //get channel which user is subscribed
 const getSubscribedChannel = asyncHandler(async (req, res) => {
   const { subscriberId } = req.params;
+  // validate subscriberId
+  if (!isValidObjectId(subscriberId)) {
+    throw new ApiError(400, "Invalid channelId");
+  }
+  //get all subscribed channels details
   const subscribedChannels = await Subscription.aggregate([
     {
       $match: {
@@ -175,6 +183,7 @@ const getSubscribedChannel = asyncHandler(async (req, res) => {
       },
     },
   ]);
+  // send data to frontend
   return res
     .status(200)
     .json(

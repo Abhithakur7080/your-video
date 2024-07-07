@@ -80,6 +80,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
   };
   //connect pagination
   const video = await Video.aggregatePaginate(videoAggregate, options);
+  //send data to frontend
   return res
     .status(200)
     .json(new ApiResponse(200, video, "Video fetched successfully"));
@@ -87,8 +88,6 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
 const publishVideo = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
-  console.log(req.files);
-
   // get video upload to cloudinary, create video
   if ([title, description].some((field) => field?.trim() === "")) {
     throw new Error(400, "All fields are required");
@@ -137,6 +136,7 @@ const publishVideo = asyncHandler(async (req, res) => {
   if (!videoUploaded) {
     throw new ApiError(500, "video upload failed please try again !!!");
   }
+  //send data to frontend
   return res
     .status(200)
     .json(new ApiResponse(200, "Video uploaded successfully"));
@@ -256,6 +256,7 @@ const getVideoById = asyncHandler(async (req, res) => {
       watchHistory: videoId,
     },
   });
+  //send data to frontend
   return res
     .status(200)
     .json(new ApiResponse(200, video[0], "video details fetched successfully"));

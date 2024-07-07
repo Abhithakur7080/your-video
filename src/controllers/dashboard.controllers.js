@@ -6,6 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 const getChannelStats = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
+  //get total channel subscribers
   const totalSubscribers = await Subscription.aggregate([
     {
       $match: {
@@ -21,6 +22,7 @@ const getChannelStats = asyncHandler(async (req, res) => {
       },
     },
   ]);
+  //get video information using aggregation
   const video = await Video.aggregate([
     {
       $match: {
@@ -59,12 +61,14 @@ const getChannelStats = asyncHandler(async (req, res) => {
       },
     },
   ]);
+  //sort all channel information statics
   const channelStats = {
     totalSubscribers: totalSubscribers[0]?.subscribersCount || 0,
     totalLikes: video[0]?.totalLikes || 0,
     totalViews: video[0]?.totalViews || 0,
     totalVideos: video[0]?.totalVideos || 0,
   };
+  //send data to frontend
   return res
     .status(200)
     .json(
@@ -73,6 +77,7 @@ const getChannelStats = asyncHandler(async (req, res) => {
 });
 const getChannelVideos = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
+  //get video information using aggregation
   const videos = await Video.aggregate([
     {
       $match: {
@@ -121,6 +126,7 @@ const getChannelVideos = asyncHandler(async (req, res) => {
       }
     }
   ]);
+  //send data to frontend
   return res.status(200).json(new ApiResponse(200, videos, "channel stats fetch successfully"))
 });
 export { getChannelVideos, getChannelStats };

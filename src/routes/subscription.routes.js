@@ -10,9 +10,9 @@ const router = Router();
 const securedRoute = router.use(verifyJWT);
 securedRoute
   .route("/c/:channelId")
-  .get(getSubscribedChannel)
+  .get(getUserChannelSubscribers)
   .post(toggleSubscription);
 
-securedRoute.route("/u/:subscriberId").get(getUserChannelSubscribers);
+securedRoute.route("/u/:subscriberId").get(getSubscribedChannel);
 
 export default router;

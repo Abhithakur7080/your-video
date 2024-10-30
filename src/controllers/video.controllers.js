@@ -103,6 +103,7 @@ const publishVideo = asyncHandler(async (req, res) => {
   if (!thumbnailLocalPath) {
     throw new Error(400, "thumbnailLocalPath is required");
   }
+  console.log(req.body, req.files);
 
   //upload video or thumbnail to cloudinary database
   const videoFile = await uploadOnCloudinary(videoFileLocalPath);
@@ -115,12 +116,13 @@ const publishVideo = asyncHandler(async (req, res) => {
   if (!thumbnail) {
     throw new Error(400, "Thumbnail not found");
   }
+  // console.log(thumbnail, videoFile);
   //after successfull create a video model
   const video = await Video.create({
     title,
     description,
     duration: videoFile.duration,
-    videoFileL: {
+    videoFile: {
       url: videoFile.url,
       public_id: videoFile.public_id,
     },

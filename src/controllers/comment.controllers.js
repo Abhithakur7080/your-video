@@ -82,9 +82,9 @@ const getVideoComments = asyncHandler(async (req, res) => {
   //arrange according to query
   const comments = await Comment.aggregatePaginate(commentsAggregate, options);
   //send data to frontend
-  return res
+    return res
     .status(200)
-    .json(new ApiResponse(200), comments, "Comments fetched successfully");
+    .json(new ApiResponse(200, comments, "Comments fetched successfully"));
 });
 const addComment = asyncHandler(async (req, res) => {
   const { videoId } = req.params;

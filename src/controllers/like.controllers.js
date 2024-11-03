@@ -7,7 +7,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 // toggle like on video
 const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
-  console.log(videoId);
   //validate videoId
   if (!isValidObjectId(videoId)) {
     throw new ApiError(400, "Invalid videoId");

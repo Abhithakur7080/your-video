@@ -7,13 +7,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const cloudinaryUploading = async (localFilePath, folderName) => {
   try {
     if (!localFilePath) return null;
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
+      folder: `youtube/${folderName}`
     });
-    console.log(localFilePath);
     //file has been uploaded successfully
     // console.log("File is uploaded on cloudinary", response.url);
     fs.unlinkSync(localFilePath); //remove after uploading from local
@@ -24,7 +24,7 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-const deleteOnCloudinary = async(public_id, resource_type="image") => {
+const deleteFromCloudinary = async(public_id, resource_type="image") => {
   try {
     if(!public_id){
       return null
@@ -38,4 +38,4 @@ const deleteOnCloudinary = async(public_id, resource_type="image") => {
   }
 }
 
-export { uploadOnCloudinary, deleteOnCloudinary };
+export { cloudinaryUploading, deleteFromCloudinary };

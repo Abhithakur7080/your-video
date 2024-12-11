@@ -7,6 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 // toggle like on video
 const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
+  console.log(videoId)
   //validate videoId
   if (!isValidObjectId(videoId)) {
     throw new ApiError(400, "Invalid videoId");
@@ -16,6 +17,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     video: videoId,
     likedBy: req.user?._id,
   });
+  console.log(likeAlready)
   //if liked then hit dislike
   if (likeAlready) {
     await Like.findByIdAndUpdate(likeAlready?._id);

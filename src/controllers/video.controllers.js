@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary, cloudinaryUploading } from "../utils/cloudinary.js";
 import mongoose, { isValidObjectId } from "mongoose";
 
 const getAllVideos = asyncHandler(async (req, res) => {
@@ -106,8 +106,8 @@ const publishVideo = asyncHandler(async (req, res) => {
   console.log(req.body, req.files);
 
   //upload video or thumbnail to cloudinary database
-  const videoFile = await uploadOnCloudinary(videoFileLocalPath);
-  const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+  const videoFile = await cloudinaryUploading(videoFileLocalPath, "videos");
+  const thumbnail = await cloudinaryUploading(thumbnailLocalPath, "videos");
   //after upload video file not received
   if (!videoFile) {
     throw new Error(400, "Video file not found");
@@ -299,7 +299,7 @@ const updateVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "thumbnail is required");
   }
   //upload the thumbnail to cloudinary database
-  const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+  const thumbnail = await cloudinaryUploading(thumbnailLocalPath, "videos");
   //if not found or having some issues on uploading on cloudinary
   if (!thumbnail) {
     throw new ApiError("thumbnail not found");
@@ -327,7 +327,7 @@ const updateVideo = asyncHandler(async (req, res) => {
   }
   //after updated delete image also from cloudinary
   if (updateVideo) {
-    await deleteOnCloudinary(thumbnailLocalPath);
+    await deleteFromCloudinary(thumbnailLocalPath);
   }
   //send response to frontend
   return res
@@ -361,8 +361,8 @@ const deleteVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Failed to delete the video, Please try again");
   }
   //after deleted from mongoose also delete from cloudinary database
-  await deleteOnCloudinary(video.thumbnail.public_id);
-  await deleteOnCloudinary(video.videoFile.public_id, "video");
+  await deleteFromCloudinary(video.thumbnail.public_id);
+  await deleteFromCloudinary(video.videoFile.public_id);
 
   //remove all video likes
   await Like.deleteMany({

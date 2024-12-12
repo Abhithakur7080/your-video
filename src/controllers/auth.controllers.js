@@ -132,9 +132,10 @@ const loginUser = asyncHandler(async (req, res) => {
   );
   //send cookie
   //set frontend cannot be modify it is secured
-  const options = {
-    httpOnly: true,
-    secure: true,
+  const options =  {
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
+    sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
   };
   return res
     .status(200)
@@ -171,10 +172,11 @@ const logoutUser = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+  const options =  {
+  httpOnly: true, 
+  secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
+  sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
+};
   return res
     .status(200)
     .clearCookie("accessToken", options)
@@ -281,8 +283,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       throw new ApiError(401, "Refresh token is expired or used");
     }
     const options = {
-      httpOnly: true,
-      secure: true,
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
+      sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
     };
     const { accessToken, newRefreshToken } =
       await generateAccessAndRefreshToken(user._id);

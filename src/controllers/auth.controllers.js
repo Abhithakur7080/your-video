@@ -135,7 +135,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const options =  {
     httpOnly: true, 
     secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
-    sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
+    // sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
   };
   return res
     .status(200)
@@ -175,7 +175,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   const options =  {
   httpOnly: true, 
   secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
-  sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
+  // sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
 };
   return res
     .status(200)
@@ -285,7 +285,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     const options = {
       httpOnly: true, 
       secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
-      sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
+      // sameSite: 'strict',  // Adjust as needed, 'lax' is often enough for most use cases
     };
     const { accessToken, newRefreshToken } =
       await generateAccessAndRefreshToken(user._id);

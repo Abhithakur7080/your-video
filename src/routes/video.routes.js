@@ -12,24 +12,23 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
+
+router.route("/").get(getAllVideos);
 const securedRoute = router.use(verifyJWT);
 
-securedRoute
-  .route("/")
-  .get(getAllVideos)
-  .post(
-    upload.fields([
-      {
-        name: "videoFile",
-        maxCount: 1,
-      },
-      {
-        name: "thumbnail",
-        maxCount: 1,
-      },
-    ]),
-    publishVideo
-  );
+securedRoute.route("/").post(
+  upload.fields([
+    {
+      name: "videoFile",
+      maxCount: 1,
+    },
+    {
+      name: "thumbnail",
+      maxCount: 1,
+    },
+  ]),
+  publishVideo
+);
 
 securedRoute
   .route("/:videoId")
